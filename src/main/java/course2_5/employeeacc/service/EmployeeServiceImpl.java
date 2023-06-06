@@ -7,6 +7,8 @@ import course2_5.employeeacc.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -25,13 +27,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employees.size() < limitEmployees) {
             Employee newEmp = new Employee(firstName, lastName);
             if (employees.contains(newEmp)) {
-                throw new EmployeeAlreadyAddedException("уже есть такой сотрудник");
+                throw new EmployeeAlreadyAddedException();
             } else {
                 employees.add(newEmp);
                 return newEmp;
             }
         } else {
-            throw new EmployeeStorageIsFullException("превышен лимит количества сотрудников в фирме");
+            throw new EmployeeStorageIsFullException();
         }
     }
 
@@ -42,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employees.remove(existEmp);
             return existEmp;
         } else {
-            throw new EmployeeNotFoundException("удаляемый сотрудник не найден");
+            throw new EmployeeNotFoundException();
         }
     }
 
@@ -52,16 +54,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employees.contains(verEmp)) {
             return verEmp;
         } else {
-            throw new EmployeeNotFoundException("сотрудник не найден!");
+            throw new EmployeeNotFoundException();
         }
     }
 
     @Override
-    public String showAllEmployees() {
-        String text = " ";
-        for (Employee employee : employees) {
-            text = text.concat(employee.toString());
-        }
-        return text;
+    public Collection<Employee> showAllEmployees() {
+        return Collections.unmodifiableList(employees);
     }
+
+
 }

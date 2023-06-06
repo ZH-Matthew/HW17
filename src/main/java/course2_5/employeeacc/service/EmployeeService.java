@@ -1,6 +1,8 @@
 package course2_5.employeeacc.service;
 import course2_5.employeeacc.Employee;
 
+import java.util.Collection;
+
 public interface EmployeeService {
     Employee addEmployee(String firstName, String lastName);
 
@@ -8,5 +10,5 @@ public interface EmployeeService {
 
     Employee findEmployee(String firstName, String lastName);
 
-    String showAllEmployees();
+    Collection<Employee> showAllEmployees();
 }
