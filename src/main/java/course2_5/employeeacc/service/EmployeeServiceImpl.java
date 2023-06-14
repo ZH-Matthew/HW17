@@ -6,30 +6,24 @@ import course2_5.employeeacc.exception.EmployeeNotFoundException;
 import course2_5.employeeacc.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    List<Employee> employees = new ArrayList<>(List.of(
-            new Employee("Валера", "Подайпатроны"),
-            new Employee("Наталья", "Морскаяпехота"),
-            new Employee("Ибрагим", "Кандибобирович")
-    ));
+    Map<String,Employee> employeesMap = new HashMap<>();
 
     final int limitEmployees = 5;
 
 
     @Override
     public Employee addEmployee(String firstName, String lastName) {
-        if (employees.size() < limitEmployees) {
+        if (employeesMap.size() < limitEmployees) {
             Employee newEmp = new Employee(firstName, lastName);
-            if (employees.contains(newEmp)) {
+            String key = firstName+lastName;
+            if (employeesMap.containsKey(key)) {
                 throw new EmployeeAlreadyAddedException();
             } else {
-                employees.add(newEmp);
+                employeesMap.put(key,newEmp);
                 return newEmp;
             }
         } else {
@@ -40,8 +34,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
         Employee existEmp = new Employee(firstName, lastName);
-        if (employees.contains(existEmp)) {
-            employees.remove(existEmp);
+        String key = firstName+lastName;
+        if (employeesMap.containsKey(key)) {
+            employeesMap.remove(key);
             return existEmp;
         } else {
             throw new EmployeeNotFoundException();
@@ -51,7 +46,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findEmployee(String firstName, String lastName) {
         Employee verEmp = new Employee(firstName, lastName);
-        if (employees.contains(verEmp)) {
+        String key = firstName+lastName;
+        if (employeesMap.containsKey(key)) {
             return verEmp;
         } else {
             throw new EmployeeNotFoundException();
@@ -59,8 +55,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Collection<Employee> showAllEmployees() {
-        return Collections.unmodifiableList(employees);
+    public Map<String, Employee> showAllEmployees() {
+        return new HashMap<>(employeesMap);
     }
 
 

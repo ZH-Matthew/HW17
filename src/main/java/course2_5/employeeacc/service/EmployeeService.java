@@ -1,7 +1,6 @@
 package course2_5.employeeacc.service;
 import course2_5.employeeacc.Employee;
-
-import java.util.Collection;
+import java.util.Map;
 
 public interface EmployeeService {
     Employee addEmployee(String firstName, String lastName);
@@ -10,5 +9,5 @@ public interface EmployeeService {
 
     Employee findEmployee(String firstName, String lastName);
 
-    Collection<Employee> showAllEmployees();
+    Map<String,Employee> showAllEmployees();
 }
