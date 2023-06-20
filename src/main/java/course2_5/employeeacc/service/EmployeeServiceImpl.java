@@ -11,20 +11,19 @@ import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    Map<String, Employee> employeesMap = new HashMap<>();
+    List<Employee> employees = new ArrayList<>();
 
     final int limitEmployees = 5;
 
 
     @Override
     public Employee addEmployee(String firstName, String lastName, int wage, int department) {
-        if (employeesMap.size() < limitEmployees) {
-            Employee newEmp = new Employee(firstName, lastName, wage, department);
-            String key = firstName + lastName;
-            if (employeesMap.containsKey(key)) {
+        if (employees.size() < limitEmployees) {
+            Employee newEmp = new Employee(firstName, lastName,wage,department);
+            if (employees.contains(newEmp)) {
                 throw new EmployeeAlreadyAddedException();
             } else {
-                employeesMap.put(key, newEmp);
+                employees.add(newEmp);
                 return newEmp;
             }
         } else {
@@ -33,34 +32,34 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public String removeEmployee(String firstName, String lastName) {
-        String key = firstName + lastName;
-        if (employeesMap.containsKey(key)) {
-            employeesMap.remove(key);
-            return "Сотрдуник " + firstName + " " + lastName + " удалён";
+    public Employee removeEmployee(String firstName, String lastName, int wage, int department) {
+        Employee existEmp = new Employee(firstName, lastName,wage,department);
+        if (employees.contains(existEmp)) {
+            employees.remove(existEmp);
+            return existEmp;
         } else {
             throw new EmployeeNotFoundException();
         }
     }
 
     @Override
-    public Employee findEmployee(String firstName, String lastName) {
-        String key = firstName + lastName;
-        if (employeesMap.containsKey(key)) {
-            return employeesMap.get(key);
+    public Employee findEmployee(String firstName, String lastName, int wage, int department) {
+        Employee verEmp = new Employee(firstName, lastName,wage,department);
+        if (employees.contains(verEmp)) {
+            return verEmp;
         } else {
             throw new EmployeeNotFoundException();
         }
     }
 
     @Override
-    public Map<String, Employee> showAllEmployees() {
-        return new HashMap<>(employeesMap);
+    public Collection<Employee> showAllEmployees() {
+        return Collections.unmodifiableList(employees);
     }
 
     @Override
     public Employee maxWageDept(int department){
-        return employeesMap.values().stream()
+        return employees.stream()
                 .filter(e -> e.getDepartment()==department)
                 .max(Comparator.comparingInt(Employee::getWage))
                 .orElseThrow();
@@ -68,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee minWageDept(int department){
-        return employeesMap.values().stream()
+        return employees.stream()
                 .filter(e -> e.getDepartment()==department)
                 .min(Comparator.comparingInt(Employee::getWage))
                 .orElseThrow();
@@ -76,16 +75,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> allEmployeesFromDept(int department){
-        return employeesMap.values().stream()
+        return employees.stream()
                 .filter(e -> e.getDepartment()==department)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Employee>  allEmployeesByDept(){
-        return employeesMap.values().stream()
-                .sorted(Comparator.comparingInt(Employee::getDepartment))
-                .collect(Collectors.toList());
+    public Map<Integer,List<Employee>>  allEmployeesByDept(){
+        return employees.stream()
+                .collect(Collectors.groupingBy(
+                Employee::getDepartment, Collectors.toList()));
     }
 }
 

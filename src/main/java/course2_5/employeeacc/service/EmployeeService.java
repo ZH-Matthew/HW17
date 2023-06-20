@@ -1,6 +1,7 @@
 package course2_5.employeeacc.service;
 import course2_5.employeeacc.Employee;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,11 @@ public interface EmployeeService {
 
     Employee addEmployee(String firstName, String lastName, int wage, int department);
 
-    String removeEmployee(String firstName, String lastName);
+    Employee removeEmployee(String firstName, String lastName, int wage, int department);
 
-    Employee findEmployee(String firstName, String lastName);
+    Employee findEmployee(String firstName, String lastName, int wage, int department);
 
-    Map<String,Employee> showAllEmployees();
+    Collection<Employee> showAllEmployees();
 
     Employee maxWageDept(int department);
 
@@ -20,5 +21,5 @@ public interface EmployeeService {
 
     List<Employee> allEmployeesFromDept(int department);
 
-    List<Employee>  allEmployeesByDept();
+    Map<Integer,List<Employee>> allEmployeesByDept();
 }
