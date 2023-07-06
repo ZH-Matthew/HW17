@@ -2,8 +2,10 @@ package course2_5.employeeacc.service;
 
 import course2_5.employeeacc.Employee;
 import course2_5.employeeacc.exception.EmployeeAlreadyAddedException;
+import course2_5.employeeacc.exception.EmployeeInvalidCharactersInNameException;
 import course2_5.employeeacc.exception.EmployeeNotFoundException;
 import course2_5.employeeacc.exception.EmployeeStorageIsFullException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,12 +21,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee addEmployee(String firstName, String lastName, int wage, int department) {
         if (employees.size() < limitEmployees) {
-            Employee newEmp = new Employee(firstName, lastName,wage,department);
-            if (employees.contains(newEmp)) {
-                throw new EmployeeAlreadyAddedException();
+            if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
+                String fName = StringUtils.capitalize(firstName);
+                String lName = StringUtils.capitalize(lastName);
+                Employee newEmp = new Employee(fName, lName, wage, department);
+                if (employees.contains(newEmp)) {
+                    throw new EmployeeAlreadyAddedException();
+                } else {
+                    employees.add(newEmp);
+                    return newEmp;
+                }
             } else {
-                employees.add(newEmp);
-                return newEmp;
+                throw new EmployeeInvalidCharactersInNameException();
             }
         } else {
             throw new EmployeeStorageIsFullException();
@@ -33,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee removeEmployee(String firstName, String lastName, int wage, int department) {
-        Employee existEmp = new Employee(firstName, lastName,wage,department);
+        Employee existEmp = new Employee(firstName, lastName, wage, department);
         if (employees.contains(existEmp)) {
             employees.remove(existEmp);
             return existEmp;
@@ -44,7 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName, int wage, int department) {
-        Employee verEmp = new Employee(firstName, lastName,wage,department);
+        Employee verEmp = new Employee(firstName, lastName, wage, department);
         if (employees.contains(verEmp)) {
             return verEmp;
         } else {
@@ -58,33 +66,33 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee maxWageDept(int department){
+    public Employee maxWageDept(int department) {
         return employees.stream()
-                .filter(e -> e.getDepartment()==department)
+                .filter(e -> e.getDepartment() == department)
                 .max(Comparator.comparingInt(Employee::getWage))
                 .orElseThrow();
     }
 
     @Override
-    public Employee minWageDept(int department){
+    public Employee minWageDept(int department) {
         return employees.stream()
-                .filter(e -> e.getDepartment()==department)
+                .filter(e -> e.getDepartment() == department)
                 .min(Comparator.comparingInt(Employee::getWage))
                 .orElseThrow();
     }
 
     @Override
-    public List<Employee> allEmployeesFromDept(int department){
+    public List<Employee> allEmployeesFromDept(int department) {
         return employees.stream()
-                .filter(e -> e.getDepartment()==department)
+                .filter(e -> e.getDepartment() == department)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Map<Integer,List<Employee>>  allEmployeesByDept(){
+    public Map<Integer, List<Employee>> allEmployeesByDept() {
         return employees.stream()
                 .collect(Collectors.groupingBy(
-                Employee::getDepartment, Collectors.toList()));
+                        Employee::getDepartment, Collectors.toList()));
     }
 }
 
