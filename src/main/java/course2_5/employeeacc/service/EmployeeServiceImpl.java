@@ -1,0 +1,73 @@
+package course2_5.employeeacc.service;
+
+import course2_5.employeeacc.Employee;
+import course2_5.employeeacc.exception.EmployeeAlreadyAddedException;
+import course2_5.employeeacc.exception.EmployeeInvalidCharactersInNameException;
+import course2_5.employeeacc.exception.EmployeeNotFoundException;
+import course2_5.employeeacc.exception.EmployeeStorageIsFullException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+    List<Employee> employees = new ArrayList<>();
+
+    final int limitEmployees = 4;
+
+    @Override
+    public List<Employee> getEmployees(){
+        return  employees;
+    }
+
+
+    @Override
+    public Employee addEmployee(String firstName, String lastName, int wage, int department) {
+        if (employees.size() < limitEmployees) {
+            if (StringUtils.isAlpha(firstName) && StringUtils.isAlpha(lastName)) {
+                String fName = StringUtils.capitalize(firstName);
+                String lName = StringUtils.capitalize(lastName);
+                Employee newEmp = new Employee(fName, lName, wage, department);
+                if (employees.contains(newEmp)) {
+                    throw new EmployeeAlreadyAddedException();
+                } else {
+                    employees.add(newEmp);
+                    return newEmp;
+                }
+            } else {
+                throw new EmployeeInvalidCharactersInNameException();
+            }
+        } else {
+            throw new EmployeeStorageIsFullException();
+        }
+    }
+
+    @Override
+    public Employee removeEmployee(String firstName, String lastName, int wage, int department) {
+        Employee existEmp = new Employee(firstName, lastName, wage, department);
+        if (employees.contains(existEmp)) {
+            employees.remove(existEmp);
+            return existEmp;
+        } else {
+            throw new EmployeeNotFoundException();
+        }
+    }
+
+    @Override
+    public Employee findEmployee(String firstName, String lastName, int wage, int department) {
+        Employee verEmp = new Employee(firstName, lastName, wage, department);
+        if (employees.contains(verEmp)) {
+            return verEmp;
+        } else {
+            throw new EmployeeNotFoundException();
+        }
+    }
+
+    @Override
+    public Collection<Employee> showAllEmployees() {
+        return Collections.unmodifiableList(employees);
+    }
+}
+
+
