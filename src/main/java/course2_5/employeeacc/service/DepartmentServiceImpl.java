@@ -5,36 +5,54 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    EmployeeServiceImpl data = new EmployeeServiceImpl();
+    private final EmployeeService data;
 
-    @Override
-    public Integer maxByDept(int department) {
-        return data.maxWageDept(department);
+    public DepartmentServiceImpl(EmployeeService data) {
+        this.data = data;
     }
 
     @Override
-    public Integer minByDept(int department) {
-        return data.minWageDept(department);
+    public Integer maxWageDept(int department) {
+        return data.getEmployees().stream()
+                .filter(e -> e.getDepartment() == department)
+                .mapToInt(Employee::getWage)
+                .max()
+                .getAsInt();
     }
 
     @Override
-    public Integer sumByDept(int department) {
-        return data.sumWageDept(department);
+    public Integer minWageDept(int department) {
+        return data.getEmployees().stream()
+                .filter(e -> e.getDepartment() == department)
+                .mapToInt(Employee::getWage)
+                .min()
+                .getAsInt();
     }
 
     @Override
-    public List<Employee> employeesByDept(int department) {
-        return data.allEmployeesFromDept(department);
+    public Integer sumWageDept(int department) {
+        return data.getEmployees().stream()
+                .filter(e -> e.getDepartment() == department)
+                .mapToInt(Employee::getWage)
+                .sum();
     }
 
     @Override
-    public Map<Integer, List<Employee>> allByDept() {
-        return data.allEmployeesByDept();
+    public List<Employee> allEmployeesFromDept(int department) {
+        return data.getEmployees().stream()
+                .filter(e -> e.getDepartment() == department)
+                .collect(Collectors.toList());
     }
 
-
+    @Override
+    public Map<Integer, List<Employee>> allEmployeesByDept() {
+        return data.getEmployees().stream()
+                .collect(Collectors.groupingBy(
+                        Employee::getDepartment, Collectors.toList()));
+    }
 }

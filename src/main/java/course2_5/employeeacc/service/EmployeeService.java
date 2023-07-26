@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface EmployeeService {
 
+    List<Employee> getEmployees();
+
     Employee addEmployee(String firstName, String lastName, int wage, int department);
 
     Employee removeEmployee(String firstName, String lastName, int wage, int department);
@@ -16,13 +18,4 @@ public interface EmployeeService {
 
     Collection<Employee> showAllEmployees();
 
-    Integer maxWageDept(int department);
-
-    Integer minWageDept(int department);
-
-    Integer sumWageDept(int department);
-
-    List<Employee> allEmployeesFromDept(int department);
-
-    Map<Integer, List<Employee>> allEmployeesByDept();
 }

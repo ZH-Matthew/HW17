@@ -7,17 +7,17 @@ import java.util.Map;
 
 public interface DepartmentService {
 
-    Integer maxByDept(int department);
+    Integer maxWageDept(int department);
 
+    //мин зп по отделу
+    Integer minWageDept(int department);
 
-    Integer minByDept(int department);
+    //сумма зп по отделу
+    Integer sumWageDept(int department);
 
+    //список сотрудников по департаменту
+    List<Employee> allEmployeesFromDept(int department);
 
-    Integer sumByDept(int department);
-
-
-    List<Employee> employeesByDept(int department);
-
-
-    Map<Integer, List<Employee>> allByDept();
+    //возвращает сотрудников, сгруппированых по отделам
+    Map<Integer, List<Employee>> allEmployeesByDept();
 }

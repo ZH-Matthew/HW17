@@ -9,13 +9,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     List<Employee> employees = new ArrayList<>();
 
     final int limitEmployees = 4;
+
+    @Override
+    public List<Employee> getEmployees(){
+        return  employees;
+    }
 
 
     @Override
@@ -63,46 +67,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Collection<Employee> showAllEmployees() {
         return Collections.unmodifiableList(employees);
-    }
-//макс зп по отделу
-    @Override
-    public Integer maxWageDept(int department) {
-        return employees.stream()
-                .filter(e -> e.getDepartment() == department)
-                .mapToInt(Employee::getWage)
-                .max()
-                .getAsInt();
-    }
-//мин зп по отделу
-    @Override
-    public Integer minWageDept(int department) {
-        return employees.stream()
-                .filter(e -> e.getDepartment() == department)
-                .mapToInt(Employee::getWage)
-                .min()
-                .getAsInt();
-    }
-//сумма зп по отделу
-    @Override
-    public Integer sumWageDept(int department) {
-        return employees.stream()
-                .filter(e -> e.getDepartment() == department)
-                .mapToInt(Employee::getWage)
-                .sum();
-    }
-//список сотрудников по департаменту
-    @Override
-    public List<Employee> allEmployeesFromDept(int department) {
-        return employees.stream()
-                .filter(e -> e.getDepartment() == department)
-                .collect(Collectors.toList());
-    }
-//возвращает сотрудников, сгруппированых по отделам
-    @Override
-    public Map<Integer, List<Employee>> allEmployeesByDept() {
-        return employees.stream()
-                .collect(Collectors.groupingBy(
-                        Employee::getDepartment, Collectors.toList()));
     }
 }
 

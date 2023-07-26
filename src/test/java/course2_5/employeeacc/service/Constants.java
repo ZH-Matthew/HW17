@@ -3,9 +3,8 @@ package course2_5.employeeacc.service;
 import course2_5.employeeacc.Employee;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class Constants {
 
@@ -47,17 +46,15 @@ public class Constants {
     public static final int WAGE_ALPHA = 55555;
     public static final int DEPT_ALPHA = 3;
 
-    public static final Employee EMPLOYEE_1 = new Employee(F_NAME_1,L_NAME_1,WAGE_1,DEPT_1);
-    public static final Employee EMPLOYEE_2 = new Employee(F_NAME_2,L_NAME_2,WAGE_2,DEPT_2);
-    public static final Employee EMPLOYEE_3 = new Employee(F_NAME_3,L_NAME_3,WAGE_3,DEPT_3);
-    public static final Employee EMPLOYEE_4 = new Employee(F_NAME_4,L_NAME_4,WAGE_4,DEPT_4);
-    public static final Employee EMPLOYEE_5 = new Employee(F_NAME_5,L_NAME_5,WAGE_5,DEPT_5);
+    public static final Employee EMPLOYEE_1 = new Employee(F_NAME_1, L_NAME_1, WAGE_1, DEPT_1);
+    public static final Employee EMPLOYEE_2 = new Employee(F_NAME_2, L_NAME_2, WAGE_2, DEPT_2);
+    public static final Employee EMPLOYEE_3 = new Employee(F_NAME_3, L_NAME_3, WAGE_3, DEPT_3);
+    public static final Employee EMPLOYEE_4 = new Employee(F_NAME_4, L_NAME_4, WAGE_4, DEPT_4);
 
-
-    public static final ArrayList<Employee> EMPLOYEES_DEPT_2 =  new ArrayList<>(List.of(EMPLOYEE_2,EMPLOYEE_3));
-    public static final ArrayList<Employee> EMPLOYEES_DEPT_3 =  new ArrayList<>(List.of(EMPLOYEE_4,EMPLOYEE_5));
-
-
+    public static final ArrayList<Employee> EMPLOYEES_DEPT_1 = new ArrayList<>(List.of(EMPLOYEE_1));
+    public static final ArrayList<Employee> EMPLOYEES_DEPT_2 = new ArrayList<>(List.of(EMPLOYEE_2, EMPLOYEE_3));
+    public static final ArrayList<Employee> EMPLOYEES_DEPT_3 = new ArrayList<>(List.of(EMPLOYEE_4));
+    public static final ArrayList<Employee> ALL_EMPLOYEES_BY_DEPT = new ArrayList<>(List.of(EMPLOYEE_1, EMPLOYEE_2, EMPLOYEE_3, EMPLOYEE_4));
 
 
 }
