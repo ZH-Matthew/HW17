@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
     List<Employee> employees = new ArrayList<>();
 
-    final int limitEmployees = 5;
+    final int limitEmployees = 4;
 
 
     @Override
@@ -64,30 +64,40 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<Employee> showAllEmployees() {
         return Collections.unmodifiableList(employees);
     }
-
+//макс зп по отделу
     @Override
-    public Employee maxWageDept(int department) {
+    public Integer maxWageDept(int department) {
         return employees.stream()
                 .filter(e -> e.getDepartment() == department)
-                .max(Comparator.comparingInt(Employee::getWage))
-                .orElseThrow();
+                .mapToInt(Employee::getWage)
+                .max()
+                .getAsInt();
     }
-
+//мин зп по отделу
     @Override
-    public Employee minWageDept(int department) {
+    public Integer minWageDept(int department) {
         return employees.stream()
                 .filter(e -> e.getDepartment() == department)
-                .min(Comparator.comparingInt(Employee::getWage))
-                .orElseThrow();
+                .mapToInt(Employee::getWage)
+                .min()
+                .getAsInt();
     }
-
+//сумма зп по отделу
+    @Override
+    public Integer sumWageDept(int department) {
+        return employees.stream()
+                .filter(e -> e.getDepartment() == department)
+                .mapToInt(Employee::getWage)
+                .sum();
+    }
+//список сотрудников по департаменту
     @Override
     public List<Employee> allEmployeesFromDept(int department) {
         return employees.stream()
                 .filter(e -> e.getDepartment() == department)
                 .collect(Collectors.toList());
     }
-
+//возвращает сотрудников, сгруппированых по отделам
     @Override
     public Map<Integer, List<Employee>> allEmployeesByDept() {
         return employees.stream()

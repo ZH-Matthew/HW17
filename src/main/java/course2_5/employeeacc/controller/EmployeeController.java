@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -47,25 +45,4 @@ public class EmployeeController {
     public Collection<Employee> showAll() {
         return service.showAllEmployees();
     }
-
-    @GetMapping("/departments/max-salary")
-    public Employee findEmployeeMaxWage(@RequestParam int departmentId) {
-        return service.maxWageDept(departmentId);
-    }
-
-    @GetMapping("/departments/min-salary")
-    public Employee findEmployeeMinWage(@RequestParam int departmentId) {
-        return service.minWageDept(departmentId);
-    }
-
-    @GetMapping(value = "/departments/all", params = "departmentId")
-    public List<Employee> allEmployeesFromDept(@RequestParam (value ="departmentId") int departmentId) {
-        return service.allEmployeesFromDept(departmentId);
-    }
-
-    @GetMapping("/departments/all")
-    public Map<Integer, List<Employee>> allEmployeesByDept() {
-        return service.allEmployeesByDept();
-    }
-
 }

@@ -1,4 +1,5 @@
 package course2_5.employeeacc.service;
+
 import course2_5.employeeacc.Employee;
 
 import java.util.Collection;
@@ -15,11 +16,13 @@ public interface EmployeeService {
 
     Collection<Employee> showAllEmployees();
 
-    Employee maxWageDept(int department);
+    Integer maxWageDept(int department);
 
-    Employee minWageDept(int department);
+    Integer minWageDept(int department);
+
+    Integer sumWageDept(int department);
 
     List<Employee> allEmployeesFromDept(int department);
 
-    Map<Integer,List<Employee>> allEmployeesByDept();
+    Map<Integer, List<Employee>> allEmployeesByDept();
 }
